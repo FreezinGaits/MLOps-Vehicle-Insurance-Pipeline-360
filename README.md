@@ -1,4 +1,3 @@
-````markdown
 # 🚗 Vehicle Insurance Response Prediction  
 ## Production-Grade End-to-End MLOps System
 
@@ -220,5 +219,3 @@ Focus: **MLOps · Production ML Systems · Cloud Deployment · Backend Engineeri
 ---
 
 ⭐ This repository demonstrates how machine learning systems are **built, evaluated, deployed, and maintained** in real production environments.
-
-````markdown
