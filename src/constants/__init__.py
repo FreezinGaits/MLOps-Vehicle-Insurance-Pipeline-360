@@ -1,5 +1,7 @@
 import os
 from datetime import date
+from dotenv import load_dotenv
+load_dotenv()
 
 # For MongoDB connection
 DATABASE_NAME = "Proj1"
@@ -13,7 +15,7 @@ MODEL_FILE_NAME = "model.pkl"
 
 TARGET_COLUMN = "Response"
 CURRENT_YEAR = date.today().year
-PREPROCSSING_OBJECT_FILE_NAME = "preprocessing.pkl"
+PREPROCESSING_OBJECT_FILE_NAME = "preprocessing.pkl"
 
 FILE_NAME: str = "data.csv"
 TRAIN_FILE_NAME: str = "train.csv"
@@ -67,7 +69,7 @@ MIN_SAMPLES_SPLIT_RANDOM_STATE: int = 101
 MODEL Evaluation related constants
 """
 MODEL_EVALUATION_CHANGED_THRESHOLD_SCORE: float = 0.02
-MODEL_BUCKET_NAME = "my-model-mlopsproj"
+MODEL_BUCKET_NAME = "my-model-mlopsproject-vehicle-insurance"
 MODEL_PUSHER_S3_KEY = "model-registry"
 
 
