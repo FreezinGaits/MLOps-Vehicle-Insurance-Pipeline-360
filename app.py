@@ -5,6 +5,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.responses import HTMLResponse, RedirectResponse
 from uvicorn import run as app_run
+from contextlib import asynccontextmanager
+
 
 from typing import Optional
 
@@ -12,10 +14,38 @@ from typing import Optional
 from src.constants import APP_HOST, APP_PORT
 from src.pipeline.prediction_pipeline import VehicleData, VehicleDataClassifier
 from src.pipeline.training_pipeline import TrainPipeline
+# Create a single global predictor instance
+model_predictor: VehicleDataClassifier | None = None
 
-# Initialize FastAPI application
-app = FastAPI()
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    global model_predictor
+    model_predictor = VehicleDataClassifier()
+
+    # force model load ONCE
+    from pandas import DataFrame
+    dummy_df = DataFrame([{
+        "Gender": 0,
+        "Age": 0,
+        "Driving_License": 0,
+        "Region_Code": 0,
+        "Previously_Insured": 0,
+        "Annual_Premium": 0,
+        "Policy_Sales_Channel": 0,
+        "Vintage": 0,
+        "Vehicle_Age_lt_1_Year": 0,
+        "Vehicle_Age_gt_2_Years": 0,
+        "Vehicle_Damage_Yes": 0
+    }])
+
+    try:
+        model_predictor.predict(dummy_df)
+    except Exception:
+        pass
+
+    yield
+app = FastAPI(lifespan=lifespan)
 # Mount the 'static' directory for serving static files (like CSS)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -123,7 +153,7 @@ async def predictRouteClient(request: Request):
         vehicle_df = vehicle_data.get_vehicle_input_data_frame()
 
         # Initialize the prediction pipeline
-        model_predictor = VehicleDataClassifier()
+        # model_predictor = VehicleDataClassifier()
 
         # Make a prediction and retrieve the result
         value = model_predictor.predict(dataframe=vehicle_df)[0]

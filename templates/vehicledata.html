@@ -3,60 +3,277 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vehicle Insurance Prediction</title>
-    <!-- Corrected the CSS path -->
+    <title>Vehicle Insurance Prediction | ML-Powered Risk Assessment</title>
     <link rel="stylesheet" href="/static/css/style.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
+<body data-has-context="{{ 'true' if context else 'false' }}">
     <div class="container">
-        <h1>Vehicle Insurance Prediction</h1>
-
-        <form method="post" action="/">
-            <label for="Gender">Gender (1: Male, 0: Female):</label>
-            <input type="number" id="Gender" name="Gender" min="0" max="1" required>
-
-            <label for="Age">Age:</label>
-            <input type="number" id="Age" name="Age" required>
-
-            <label for="Driving_License">Driving License (0: No, 1: Yes):</label>
-            <input type="number" id="Driving_License" name="Driving_License" min="0" max="1" required>
-
-            <label for="Region_Code">Region Code:</label>
-            <input type="number" step="0.01" id="Region_Code" name="Region_Code" required>
-
-            <label for="Previously_Insured">Previously Insured (0: No, 1: Yes):</label>
-            <input type="number" id="Previously_Insured" name="Previously_Insured" min="0" max="1" required>
-
-            <label for="Annual_Premium">Annual Premium:</label>
-            <input type="number" step="0.01" id="Annual_Premium" name="Annual_Premium" required>
-
-            <label for="Policy_Sales_Channel">Policy Sales Channel:</label>
-            <input type="number" step="0.01" id="Policy_Sales_Channel" name="Policy_Sales_Channel" required>
-
-            <label for="Vintage">Vintage:</label>
-            <input type="number" id="Vintage" name="Vintage" required>
-
-            <label for="Vehicle_Age_lt_1_Year">Vehicle Age < 1 Year (0: No, 1: Yes):</label>
-            <input type="number" id="Vehicle_Age_lt_1_Year" name="Vehicle_Age_lt_1_Year" min="0" max="1" required>
-
-            <label for="Vehicle_Age_gt_2_Years">Vehicle Age > 2 Years (0: No, 1: Yes):</label>
-            <input type="number" id="Vehicle_Age_gt_2_Years" name="Vehicle_Age_gt_2_Years" min="0" max="1" required>
-
-            <label for="Vehicle_Damage_Yes">Vehicle Damage (0: No, 1: Yes):</label>
-            <input type="number" id="Vehicle_Damage_Yes" name="Vehicle_Damage_Yes" min="0" max="1" required>
-
-            <button type="submit">Predict</button>
-        </form>
-
-        <form method="get" action="/train">
-            <button type="submit" class="train-button">Train Model</button>
-        </form>
-
-        {% if context %}
-            <div class="result">
-                <h2>Result: {{ context }}</h2>
+        <!-- Left Section: Header and Information -->
+        <section class="header-section">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h2>InsureAI</h2>
+                </div>
+                
+                <h1>Vehicle Insurance Prediction System</h1>
+                <p class="subtitle">
+                    Advanced ML-powered risk assessment for vehicle insurance. 
+                    Our model analyzes multiple factors to predict insurance likelihood with high accuracy.
+                </p>
+                
+                <ul class="features">
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>Real-time prediction with trained ML model</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>Comprehensive risk factor analysis</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>Industry-standard data processing</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>Secure and confidential data handling</span>
+                    </li>
+                </ul>
             </div>
-        {% endif %}
+        </section>
+        
+        <!-- Right Section: Form and Results -->
+        <section class="form-section">
+            <div class="form-header">
+                <h2>Risk Assessment Form</h2>
+                <p>Enter vehicle and policyholder details for insurance prediction analysis</p>
+            </div>
+            
+            <div class="form-container">
+                <form method="post" action="/" id="predictionForm">
+                    <!-- Row 1 -->
+                    <div class="form-group">
+                        <label for="Gender">
+                            <i class="fas fa-user"></i>
+                            Gender
+                            <span class="tooltip">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="tooltiptext">1: Male, 0: Female</span>
+                            </span>
+                        </label>
+                        <input type="number" id="Gender" name="Gender" min="0" max="1" required placeholder="0 or 1">
+                        <div class="validation-message">Please enter 0 for Female or 1 for Male</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="Age">
+                            <i class="fas fa-birthday-cake"></i>
+                            Age
+                        </label>
+                        <input type="number" id="Age" name="Age" required placeholder="Policyholder age" min="18" max="100">
+                        <div class="validation-message">Please enter a valid age (18-100)</div>
+                    </div>
+                    
+                    <!-- Row 2 -->
+                    <div class="form-group">
+                        <label for="Driving_License">
+                            <i class="fas fa-id-card"></i>
+                            Driving License
+                            <span class="tooltip">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="tooltiptext">0: No License, 1: Has License</span>
+                            </span>
+                        </label>
+                        <input type="number" id="Driving_License" name="Driving_License" min="0" max="1" required placeholder="0 or 1">
+                        <div class="validation-message">Please enter 0 for No or 1 for Yes</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="Region_Code">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Region Code
+                        </label>
+                        <input type="number" step="0.01" id="Region_Code" name="Region_Code" required placeholder="e.g., 28.0">
+                    </div>
+                    
+                    <!-- Row 3 -->
+                    <div class="form-group">
+                        <label for="Previously_Insured">
+                            <i class="fas fa-history"></i>
+                            Previously Insured
+                            <span class="tooltip">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="tooltiptext">0: Not Previously Insured, 1: Previously Insured</span>
+                            </span>
+                        </label>
+                        <input type="number" id="Previously_Insured" name="Previously_Insured" min="0" max="1" required placeholder="0 or 1">
+                        <div class="validation-message">Please enter 0 for No or 1 for Yes</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="Annual_Premium">
+                            <i class="fas fa-money-bill-wave"></i>
+                            Annual Premium ($)
+                        </label>
+                        <input type="number" step="0.01" id="Annual_Premium" name="Annual_Premium" required placeholder="e.g., 25000.50">
+                    </div>
+                    
+                    <!-- Row 4 -->
+                    <div class="form-group">
+                        <label for="Policy_Sales_Channel">
+                            <i class="fas fa-shopping-cart"></i>
+                            Policy Sales Channel
+                        </label>
+                        <input type="number" step="0.01" id="Policy_Sales_Channel" name="Policy_Sales_Channel" required placeholder="e.g., 124.0">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="Vintage">
+                            <i class="fas fa-calendar-alt"></i>
+                            Vintage (Days)
+                        </label>
+                        <input type="number" id="Vintage" name="Vintage" required placeholder="Number of days">
+                    </div>
+                    
+                    <!-- Row 5: Vehicle Information -->
+                    <div class="form-group full-width">
+                        <label style="margin-bottom: 15px; font-size: 1rem;">
+                            <i class="fas fa-car"></i>
+                            Vehicle Information
+                        </label>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div>
+                                <label for="Vehicle_Age_lt_1_Year" style="font-size: 0.85rem;">
+                                    Vehicle Age &lt; 1 Year
+                                    <span class="tooltip">
+                                        <i class="fas fa-info-circle"></i>
+                                        <span class="tooltiptext">0: No, 1: Yes</span>
+                                    </span>
+                                </label>
+                                <input type="number" id="Vehicle_Age_lt_1_Year" name="Vehicle_Age_lt_1_Year" min="0" max="1" required placeholder="0 or 1">
+                            </div>
+                            <div>
+                                <label for="Vehicle_Age_gt_2_Years" style="font-size: 0.85rem;">
+                                    Vehicle Age &gt; 2 Years
+                                    <span class="tooltip">
+                                        <i class="fas fa-info-circle"></i>
+                                        <span class="tooltiptext">0: No, 1: Yes</span>
+                                    </span>
+                                </label>
+                                <input type="number" id="Vehicle_Age_gt_2_Years" name="Vehicle_Age_gt_2_Years" min="0" max="1" required placeholder="0 or 1">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Row 6 -->
+                    <div class="form-group full-width">
+                        <label for="Vehicle_Damage_Yes">
+                            <i class="fas fa-car-crash"></i>
+                            Vehicle Damage
+                            <span class="tooltip">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="tooltiptext">0: No Damage History, 1: Has Damage History</span>
+                            </span>
+                        </label>
+                        <input type="number" id="Vehicle_Damage_Yes" name="Vehicle_Damage_Yes" min="0" max="1" required placeholder="0 or 1">
+                        <div class="validation-message">Please enter 0 for No or 1 for Yes</div>
+                    </div>
+                    
+                    <!-- Button Group -->
+                    <div class="button-group">
+                        <button type="submit" class="predict-btn">
+                            <i class="fas fa-chart-line"></i>
+                            Predict Insurance Likelihood
+                        </button>
+                        
+                        <button type="button" class="train-btn" onclick="window.location.href='/train'">
+                            <i class="fas fa-cogs"></i>
+                            Train Model
+                        </button>
+                    </div>
+                </form>
+                
+                <!-- Loading Indicator -->
+                <div class="loading" id="loadingIndicator">
+                    <div class="loading-spinner"></div>
+                    <p>Processing prediction analysis...</p>
+                </div>
+                
+                <!-- Result Display -->
+                {% if context %}
+                <div class="result-container">
+                    <div class="result-header">
+                        <i class="fas fa-clipboard-check"></i>
+                        <h3>Prediction Result</h3>
+                    </div>
+                    <div class="result-content">
+                        {{ context }}
+                    </div>
+                    <div style="margin-top: 15px; font-size: 0.9rem; color: var(--gray);">
+                        <i class="fas fa-lightbulb"></i>
+                        <strong>Insight:</strong> 
+                        {% if "interested" in context.lower() %}
+                        The customer shows high interest in vehicle insurance based on risk profile.
+                        {% elif "not interested" in context.lower() %}
+                        The customer shows low interest in vehicle insurance based on risk profile.
+                        {% else %}
+                        Analysis complete. Review the prediction result above.
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Info Footer -->
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--gray-light); color: var(--gray); font-size: 0.85rem;">
+                    <p>
+                        <i class="fas fa-lock"></i>
+                        <strong>Data Security:</strong> All submitted information is processed securely and is not stored permanently.
+                    </p>
+                </div>
+            </div>
+        </section>
     </div>
+    
+    <script>
+        // Form submission loading indicator
+        document.getElementById('predictionForm').addEventListener('submit', function() {
+            document.getElementById('loadingIndicator').style.display = 'block';
+        });
+        
+        // Input validation and formatting
+        document.querySelectorAll('input[type="number"]').forEach(input => {
+            input.addEventListener('change', function() {
+                // Ensure binary inputs are 0 or 1
+                if (this.min === '0' && this.max === '1') {
+                    if (this.value < 0) this.value = 0;
+                    if (this.value > 1) this.value = 1;
+                    if (this.value !== '0' && this.value !== '1') this.value = '';
+                }
+                
+                // Highlight valid/invalid inputs
+                if (this.checkValidity()) {
+                    this.style.borderColor = '#c6f6d5';
+                } else {
+                    this.style.borderColor = 'var(--danger)';
+                }
+            });
+        });
+        
+        // Auto-format inputs on page load if they have values
+        document.addEventListener('DOMContentLoaded', function() {
+        const hasContext = document.body.dataset.hasContext === 'true';
+        if (hasContext) {
+            document.querySelector('.result-container')
+                ?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        });
+    </script>
 </body>
 </html>
